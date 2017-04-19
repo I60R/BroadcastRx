@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/BroadcastRx.iml" filepath="$PROJECT_DIR$/BroadcastRx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/broadcastrx/broadcastrx.iml" filepath="$PROJECT_DIR$/broadcastrx/broadcastrx.iml" />
+    </modules>
+  </component>
+</project>
