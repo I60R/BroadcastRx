@@ -9,6 +9,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
@@ -20,6 +21,12 @@ import io.reactivex.functions.Function;
 
 public class BroadcastRx extends BroadcastReceiver {
     private static Context context = null;
+    private static ObservableTransformer<OnBroadcast, OnBroadcast> hook = new ObservableTransformer<OnBroadcast, OnBroadcast>() {
+        @Override
+        public ObservableSource<OnBroadcast> apply(@NonNull Observable<OnBroadcast> upstream) {
+            return upstream;
+        }
+    };
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -30,10 +37,15 @@ public class BroadcastRx extends BroadcastReceiver {
         BroadcastRx.context = context;
     }
 
+    public static final void hook(ObservableTransformer<OnBroadcast, OnBroadcast> hook) {
+        BroadcastRx.hook = hook;
+    }
+
 
     public static final Observable<OnBroadcast> global(final IntentFilter filter) {
         return Observable
-                .create(new GlobalBroadcastOnSubscribe(filter, context));
+                .create(new GlobalBroadcastOnSubscribe(filter, context))
+                .compose(hook);
     }
 
     public static final Observable<OnBroadcast> global(final IntentFilter... filters) {
@@ -73,7 +85,8 @@ public class BroadcastRx extends BroadcastReceiver {
 
     public static final Observable<OnBroadcast> local(final IntentFilter filter) {
         return Observable
-                .create(new LocalBroadcastOnSubscribe(filter, context));
+                .create(new LocalBroadcastOnSubscribe(filter, context))
+                .compose(hook);
     }
 
     public static final Observable<OnBroadcast> local(final IntentFilter... filters) {
