@@ -1,8 +1,11 @@
 package i60r.broadcastrx;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -15,8 +18,13 @@ import io.reactivex.functions.Function;
  * Created by 160R on 19.04.17.
  */
 
-public class BroadcastRx {
+public class BroadcastRx extends BroadcastReceiver {
     private static Context context = null;
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
 
     public static final void init(Context context) {
         BroadcastRx.context = context;
