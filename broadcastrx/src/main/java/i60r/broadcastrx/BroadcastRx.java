@@ -1,6 +1,7 @@
 package i60r.broadcastrx;
 
 
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -33,7 +34,7 @@ public class BroadcastRx extends BroadcastReceiver {
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
-    public static final void init(Context context) {
+    public static final void init(Application context) {
         BroadcastRx.context = context;
     }
 
